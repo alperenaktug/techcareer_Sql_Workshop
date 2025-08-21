@@ -68,6 +68,12 @@
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
+-- NULL Kavramý : 
+
+-- SQL'de NULL, bir deðerin bilinmediði, mevcut olmadýðý veya uygulanamadýðý anlamýna gelen özel bir iþaretleyicidir. 
+-- Sýfýr veya boþ bir karakter dizisi (string) deðildir; aslýnda herhangi bir deðerin yokluðunu temsil eder.
+
+------------------------------------------------------------------------------------------------------------------------------------
 
 
 create DATABASE WorkShopDB  -- Veritabaný yaratýldý.
@@ -81,3 +87,9 @@ create table Students (     -- Students adaýnda tablo oluþturuldu.
 	 BirthDate Date,
 	 Email nvarchar(100)
 )
+
+alter table Students add PhoneNumber nvarchar(20)  -- Tablo üzerine PhoneNumber ekleme iþlemi yapýldý. 
+
+alter table Students drop column PhoneNumber    -- Tablo üzerinde PhoneNumber silme iþlemi yapýldý.
+
+drop table Students     -- Veritanýnda Students tablosu içindekilerler beraber geri bir daha dönülemez þekilde silindi.
