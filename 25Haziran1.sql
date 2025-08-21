@@ -93,3 +93,118 @@ alter table Students add PhoneNumber nvarchar(20)  -- Tablo üzerine PhoneNumber 
 alter table Students drop column PhoneNumber    -- Tablo üzerinde PhoneNumber silme iþlemi yapýldý.
 
 drop table Students     -- Veritanýnda Students tablosu içindekilerler beraber geri bir daha dönülemez þekilde silindi.
+
+
+
+---------------------------------------------------------------------------------------------------------------------------
+
+
+create table Users(
+   UserId int primary key identity (1,1),  -- UserId primary key þeklinde 1 den baþlayaýp 1 er 1 er artacak þekilde oluþturuldu.
+   FullName nvarchar(100) NOT NULL,   -- FullName nvarchar þekliden tanýmlandý ve NOT NULL olacak þekilde yani boþ býrakýlamaz þekilde oluþturuldu.
+   Email nvarchar(100) UNIQUE NOT NULL,   -- Email nvarchar þeklinde tanýmlandý . UNIQUE olarak ayarlandý yani daha önceden kayýtlý olmayan bir email hesabý                                  
+   Phone nvarchar(20) NOT NULL,
+   IsStudent BIT default 1,  -- IsStudent deðeri BIT ile default olarak true dendi ve oluþturuldu.
+   RegisteredAt DATETIME default GETDATE() -- RegisteredAt deðeri DATETIME ollarak oluþturuldu ve default deðeri olarak ise kayýt olduðu aný GETDATE() ile aldýk.
+)
+
+
+create table Workshops(
+  WorkshopId int primary key identity(1,1),
+  Title nvarchar(150) NOT NULL,
+  Description nvarchar(max), -- Burada max ile bir sýnýr yok bittiði yere kadar al denmekte.
+  StartDate DATE NOT NULL,
+  EndDate DATE NOT NULL,
+  Capacity int NOT NULL,
+  Price DECIMAL(10,2) default 0
+)
+
+
+create table Registrations(
+  RegistrationId int primary key identity(1,1),
+  UserId int NOT NULL,
+  WorkshopId int NOT NULL,
+  AppliedAt DATETIME default GETDATE(),
+  IsApproved BIT default 0
+
+-- constraints (kýsýtlamalar) tablolar arasýndaki iliþkileri belirlemek ve veri bütünlüðünü saðlamak amacýyla kullanýlýr.
+
+  constraint FK_Registrations_Users foreign key (UserId) references Users(UserId),
+  --Bu satýr, Registrations tablosundaki UserId sütununun, Users tablosundaki UserId sütununa bir yabancý anahtar olarak baðlandýðýný tanýmlar.
+  constraint FK_Registrations_Workshops foreign key (WorkshopId) references Workshops(WorkshopId)
+)
+-- IMPORTANT : 
+
+-- Veri Bütünlüðü Saðlanýr: Her kayýt, geçerli bir kullanýcý ve geçerli bir atölyeye baðlanmak zorundadýr.
+-- Yanlýþ Veri Giriþi Engellenir: Yanlýþlýkla veya bilinçli olarak var olmayan bir kullanýcý veya atölye ID'si ile 
+-- kayýt oluþturulmasý engellenir.
+-- Ýliþkisel Sorgular Kolaylaþýr: JOIN komutlarý kullanarak bir kaydýn detaylarýný (kimin kaydolduðu, hangi atölyeye
+-- kaydolduðu vb.) kolayca alabilirsiniz. Örneðin, "Ahmet'in katýldýðý tüm atölye isimlerini listele" gibi bir sorgu
+-- bu kýsýtlamalar sayesinde sorunsuz çalýþýr.
+
+
+create table Instructors(
+ InstructorId int primary key identity(1,1),
+ FullName nvarchar(100),
+ Bio nvarchar(max),
+ Email nvarchar(100) UNIQUE
+)
+
+alter table Workshops add InstructorId int -- Workshops tablosuna InstructorId sütunu eklendi.
+
+alter table Workshops add constraint   -- Workshops tablosuyla Instructors tablosu arasýnda InstructorId foreign key olarak iliþki kuruldu.
+            FK_Workshops_Instructors foreign key (InstructorId)
+	                                 references Instructors(InstructorId)
+
+
+
+--------------------------------------------------------------------------------------------------------
+
+-- DML Komutlarý : 
+-- (Data Manipulation Language (Veri manipülasyon dili))
+
+-- DML komutlarý, veritabanýndaki verileri yönetmek ve deðiþtirmek için kullanýlýr.
+-- Bu komutlar, tablolardaki mevcut verilere eriþmenizi, onlarý güncellemenizi, eklemenizi veya silmenizi saðlar.
+
+-- SELECT : 
+-- Veritabanýndan veri çekmek için kullanýlýr. Bu komut, belirtilen tablodan belirli sütunlarý veya tüm verileri
+-- sorgulamaya yarar. Veritabanýný okuyan, ancak veriyi deðiþtirmeyen tek DML komutudur.
+
+-- INSERT : 
+-- Bir tabloya yeni veri eklemek için kullanýlýr. Genellikle INSERT INTO yapýsýyla kullanýlýr.
+
+-- UPDATE : 
+-- Bir tablodaki mevcut verileri deðiþtirmek için kullanýlýr. Genellikle WHERE koþuluyla birlikte kullanýlýr;
+-- bu sayede sadece istenilen satýrlar güncellenir. WHERE koþulu kullanýlmazsa, tablodaki tüm veriler güncellenir.
+
+-- DELETE : 
+-- Bir tablodan veri silmek için kullanýlýr. UPDATE komutuna benzer þekilde, WHERE koþuluyla birlikte kullanýlmasý önemlidir.
+-- Aksi takdirde, tablodaki tüm veriler silinir.
+
+
+
+insert into Users(FullName,Email,Phone,IsStudent) -- Users tablosuna insert into ile veriler eklendi .
+       values ('Eda Korkmaz','eda@korkmaz.com','05555555555',1)
+
+insert into Workshops (Title,Description,StartDate,EndDate,Capacity,Price)
+       values(
+	     'SQL Temelleri',
+		 'Veritabaný Yönetimi ve SQL sorgularýna giriþ',
+		 '2025-07-01',
+		 '2025-07-03',
+		 30,
+		 199.90	   
+	   )
+
+insert into Instructors ()
+
+
+
+
+
+
+
+
+
+
+
