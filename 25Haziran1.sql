@@ -58,7 +58,7 @@
 -- TIME: Yalnýzca saati (HH:MM:SS formatýnda) saklar.
 -- DATETIME: Hem tarihi hem de saati (YYYY-MM-DD HH:MM:SS formatýnda) saklar.
 
--- Diðer Vrei Tipleri : 
+-- Diðer Veri Tipleri : 
 
 -- BOOLEAN (veya BIT): Sadece True (Doðru) veya False (Yanlýþ) gibi mantýksal deðerleri saklar. BIT, 0 veya 1 deðerlerini tutar.
 -- BINARY / VARBINARY: Ýkili verileri (resim, ses dosyasý vb.) saklamak için kullanýlýr.
